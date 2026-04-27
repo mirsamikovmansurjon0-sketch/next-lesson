@@ -1,4 +1,26 @@
 {
-  "orders": [],
+  "orders": [
+    {
+      "taom": "Lavash",
+      "miqdor": 323,
+      "narx": 34000,
+      "time": "14/04/2026, 22:38:15",
+      "id": "ZW0T12nmPs0"
+    },
+    {
+      "taom": "Xotdog",
+      "miqdor": 1,
+      "narx": 25000,
+      "time": "14/04/2026, 22:38:25",
+      "id": "UZP6v1FGxEk"
+    },
+    {
+      "taom": "Lavash",
+      "miqdor": 4,
+      "narx": 34000,
+      "time": "16/04/2026, 23:09:08",
+      "id": "PbjYx0Wqlrg"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

@@ -1,56 +1,65 @@
- 
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-export default function LoginPage() {
+interface LoginPageProps {
+  searchParams: Promise<{ error?: string }>;
+}
 
-  const handleSubmit = async(formdata:FormData) => {
-    "use server"
-        const tel=formdata.get("tel")
-        const parol=formdata.get("parol")
-        console.log(tel,parol);
-  };
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const { error } = await searchParams;
+
+  async function handleLogin(formdata: FormData) {
+    "use server";
+
+    const username = formdata.get("username") as string;
+    const password = formdata.get("password") as string;
+
+    if (username === "Mansur" && password === "12345") {
+      const cookieStore = await cookies();
+      
+      cookieStore.set("user_role", "admin", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 24,
+        path: "/",
+      });
+
+      redirect("/admin");
+    } else {
+      redirect("/login?error=1");
+    }
+  }
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 border border-gray-200 rounded-lg shadow bg-white">
-      <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
-      <form action={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="tel" className="block text-gray-700 font-medium mb-1">
-            Telefon raqam
-          </label>
-          <input
-            type="tel"
-            id="tel"
-            name="tel"
-            required
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="998901234567"
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="parol" className="block text-gray-700 font-medium mb-1">
-            Parol
-          </label>
-          <input
-            type="password"
-            id="parol"
-            name="parol"
-            required
-            autoComplete="off"
-            className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded transition-colors"
-        >
-          Login
+    <div className="min-h-screen bg-[#111111] flex items-center justify-center font-sans">
+      <form action={handleLogin} className="bg-[#1a1a1a] p-8 rounded-2xl shadow-2xl w-96 flex flex-col gap-5 border border-gray-800">
+        <div className="text-[#00FF41] font-black text-3xl text-center italic mb-2 tracking-tighter"> ADMIN</div>
+        
+        {error && (
+          <p className="bg-red-500/10 text-red-500 p-3 rounded-lg text-sm text-center border border-red-500/20">
+            Login yoki parol xato!
+          </p>
+        )}
+
+        <input 
+          name="username" 
+          type="text"
+          placeholder="Admin login" 
+          className="bg-gray-800 border-none text-white p-3 rounded-lg outline-none focus:ring-2 focus:ring-[#4CAF50] transition" 
+          required 
+        />
+        <input 
+          name="password" 
+          type="password" 
+          placeholder="Parol" 
+          className="bg-gray-800 border-none text-white p-3 rounded-lg outline-none focus:ring-2 focus:ring-[#4CAF50] transition" 
+          required 
+        />
+        
+        <button type="submit" className="bg-[#4CAF50] text-white p-3 rounded-lg font-bold hover:bg-[#45a049] active:scale-95 transition">
+          Tizimga kirish
         </button>
       </form>
-      {/* {submitted && (
-        <div className="mt-5 text-green-600 text-center font-medium">
-          Submitted! (No authentication logic implemented)
-        </div>
-      )} */}
     </div>
   );
 }
