@@ -1,4 +1,4 @@
-import Navbar from "@/components/ui/Navbar"; // Navbar yo'li to'g'riligiga ishonch hosil qiling
+import Navbar from "components/ui/Navbar"; // Navbar yo'li to'g'riligiga ishonch hosil qiling
 import "./globals.css";
 
 export const metadata = {
